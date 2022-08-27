@@ -1,5 +1,5 @@
 const request = new XMLHttpRequest();
-request.open("GET", "http://localhost:9999/friend.json");
+request.open("GET", "/friend.json");
 request.onreadystatechange = () => {
   if (request.readyState === 4 && request.status === 200) {
     console.log(request.response);

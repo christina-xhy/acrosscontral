@@ -34,11 +34,25 @@ var server = http.createServer(function (request, response) {
     response.write(fs.readFileSync("./public/qq.js"));
     response.end();
   } else if (path === "/friend.json") {
+    console.log("route friend");
     response.statusCode = 200;
     response.setHeader("Content-Type", "text/json;charset=utf-8");
     console.log(request.headers["referer"]);
-    response.setHeader("Access-Control-Allow-Origin", "http://localhost:9999");
+    response.setHeader("Access-Control-Allow-Origin", "http://frank.com:9999");
     response.write(fs.readFileSync("./public/friend.json"));
+    response.end();
+  } else if (path === "/friends.js") {
+    console.log("========");
+    response.statusCode = 200;
+    response.setHeader("Content-Type", "text/javascript;charset=utf-8");
+    // 需要把friend.json的数据传给friends.js(中间商)，并把replace数据。
+    const string = fs.readFileSync("./public/friends.js").toString();
+    const data = fs.readFileSync("./public/friend.json").toString(); //需要toString
+    console.log("#####");
+    const string2 = string
+      .replace("{{data}}", data)
+      .replace("{{xxx}}", query.callback);
+    response.write(string2);
     response.end();
   } else {
     response.statusCode = 404;
